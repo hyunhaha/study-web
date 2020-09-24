@@ -77,3 +77,87 @@ defer옵션이나 DOMContetnLoaded라는 이벤트는 html만 완료가 되면 �
 beforeunload는 unloaded 되기 전에 호출이 되고
 unloaded는 리소스들이 모두 unloaded가 되었을 때 호출이 된다.
 그래서 사용자가 페이지를 나가지 전에 뭔가 해야한다면 여기에 콜백함수를 등록해서 처리 할 수 있다
+
+Async vs defer
+---------------
+ 
+html에서 javascript를 포함할 때 어떻게 포함하는게  효율적인지 알아본다.
+
+1. head에 스크립트 파일을 넣는 경우
+```
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Document</title>
+        <script src="main.js"></script>
+    </head>
+    <body></body>
+</html>
+```
+
+브라우저가 HTML 파일을 한줄씩 분석한다(parsing)
+ 
+한 줄씩 분석을 하다가 스크립트 태그를 만나면 스크립트를 다운받아야 한다고 이해하게 된다.
+그래서 HTML을 parsing하는 것을 잠시 멈추고 필요한 자바스크립트 파일을 서버에서 다운받아서 그것을 실행한 후 다시 HTML을 parsing하게 된다.
+
+* 단점은?
+사용자가 웹사이트 전체를 보게 되는 데 까지 시간이 많이 걸린다. 그래서 스크립트를 헤드에 그냥 포함하는 것은 좋은것이 아니다. 
+
+
+2. body 마지막에 스크립트를 넣는 경우
+```
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Document</title>
+        
+    </head>
+    <body>
+
+        <script src="main.js"></script>
+    </body>
+</html>
+```
+이렇게 하게 되면 브라우저가 HTML전체를 parsing하고 준비가 된다음에 스크립트를 다운받게 되어 실행하게 된다. 그럼 사용자는 먼저 페이지를 볼 수 있다는 장점이있다.
+
+* 단점은?
+만약 웹사이트가 자바스크립트에 많이 의존적이라면 즉, 사용자가 의미있는 컨탠츠를 보기 위해서는 HTML을 받는 시간뿐아니라  자바스크립트도 받고 실행하는 시간까지 걸리기 때문에 사용사는 많이 기다리게 될 수 도 있다.
+
+3. head안에 스크립트 && asyc라는 속성을 넣는 경우 
+```
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Document</title>
+        <script asyc src="main.js"></script>
+    </head>
+    <body>
+    </body>
+</html>
+```
+asyc는 boolean타입의 속성값이다. 그래서 선언하는 것 만으로도 true가 된다.
+asyc로 설정하게 되면 브라우저가 html을 parsing하다가 asyc가 선언된 스크립트를 만나게 되면 그 스크립트를 병렬로 다운받자고 명령만 해놓고 다시 html을 parsing하다가 main.js가 다운이 완료 되면 html parsing을 멈추고 maing.js를 실행한다. 실행이 완료 되면 나머지 html을 parsing을 한다. 이렇게 하면 장점은 body끝에 사용하는 것 보다는 병렬로 다운받고 parsing햐기 때문에 시간을 절약할 수 있다.
+하지만 자바스크립트가 html이 다 다운 되기 전에 실행이 되기 때문에  자바스크립트에서 필요한 Html요소가 아직 다운이 다 되지 않은 경우가 생길 수 있다.
+또 자바스크립트를 다운하고 실행하는 동안 html 다운은 언제든지 멈출수 있기 때문에 사용작 페이지를 보는데 시간이 많이 걸릴수 있다 
+
+4. head안에 스크립트를 && defer이라는 속성을 넣는 경우
+```
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Document</title>
+        <script defer src="main.js"></script>
+    </head>
+    <body>
+    </body>
+</html>
+```
+이 경우에는 html parsing하다가 스크립트를 만나면 다운로드를 받자고 명령만 시켜 놓고 나머지 html을 parsing 하게 된다. 그리고 마지막에 parsing이 끝난 후에 다운받아 놓은  자바스크립트를 실행한다
+
+
+* ’use strict’; 정의하는 이유
+자바스크립트는 유연하게 만들어졌다. 유연하다는 것은 굉장히 위험할 수 있다는 뜻이 될 수 있다.  Use strict를 선언하면 비상식적인 부분이 제한 된다. 
+
