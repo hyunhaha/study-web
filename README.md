@@ -11,12 +11,16 @@ APIs란?
 
 이처럼 Web APIs는 브라우저에서 제공하는 것이다. 브라우저마다 공통적으로 제공하는 API 많이 있는데 DOM APIs, Network APIs, 그래픽 관련 APIs등 여러가지가 있다. 
 
+
+
 HTTP와 HTTPS
 -------------
 Web APIs 중에서 HTTPs에서만 동작할 수 있다는 경고가 있는 것들이 있다.
 
 브라우저는 사용자의 정보를 보호할 의무가 있기 때문에 정보보안에 굉장히 민감하다.  HTTP(Hypertext transfer Protocol)는 웹 클라이언트와 서브가 어떻게 통신하는지 통신규약을 정해 놓은 것으로 클라이언트가 서버에게 정보를 요청하고 다시 서버에서 정보를 받아오는 request를 하고 response를 방아온느 방식으로 이루어져 있다.
 HTTPS는 HTTP에 S가 더해진 아이이다. Hypertext transfer Protocol Secure의 약자이다. 즉 정보를 주고 받는 것들이 잘 감싸져있는 보안 처리가 되고 있다는 말이다. 
+
+
 
 Browser
 -------------
@@ -27,15 +31,19 @@ Browser
 
 브라우저에서 가장 위에있는 오브젝트는 Window로 콘솔창에 this라고 출력하면 Window가 나온다.
 
+
+
 브라우저 좌표
 -------------
 Client x,y 와 Page x,y
 Client x,y 는 사용자가 보는 페이지에 상관없이 브라우저 윈도우 창에서 x,y가 얼마나 떨어져 있는지가 전달이 된다.
-Page x,y 는 클라이언트에 들어있는 사이즈가 아니라 문서에서 떨어져 있는 x와y를 의미한다.
+Page x,y 는 클라이언트에 들어있는 사이즈가 아니라 문서의 처음 시작에서 떨어져 있는 x와y를 의미한다.
+ 
+ 
  
 Window load
 -------------
-1. load
+### load
 ```
     <script>
        window.addEventListener('load', () => {
@@ -46,7 +54,9 @@ Window load
 load는 리소스, 즉 페이지 안에서 쓰이고 있는 폰트나 이미지 css 같은 것들이 다 다운되면 호출이 된다
 브라우저가 html파일을 열게 되면 처음 부터 html페이지를 읽어서 DOM 요소로 변환한 다음 스크립트 부분을 만나면 윈도우에 이벤트 리스너를 등록하게되고 윈도우에서 페이지에 필요한 모든 리소스가 다 로딩이 완료가 되면 콜백함수를 실행한다.
 
-2. DOMContentLoaded
+
+
+### DOMContentLoaded
 ```
 <script>
 	window.addEventListener("DOMContentLoaded", () => {
@@ -57,7 +67,9 @@ load는 리소스, 즉 페이지 안에서 쓰이고 있는 폰트나 이미지 
 DOMContentLoaded는 html만 다 완료가 되면 이것이 호출 된다. 자바스크립트 파일이 이미지나 폰트 를 사용하지 않으면 DOMContentLoaded안에서 동작을 수행하는 것이 조금 더 빠르게 사용자가 화면을 볼 수 있는 장점이 있다.
 defer옵션이나 DOMContetnLoaded라는 이벤트는 html만 완료가 되면 호출 되기 때문에 리소스가 많은 경우에는 DOMContetnLoaded으로 빠르게 화면을 보여주고 load는 조금 후에 리소스가 다 준비되면 보여 줄 수 있다
 
-3. beforeunload 와 unloaded
+
+
+### beforeunload 와 unloaded
 
 ```
 <script>
@@ -77,6 +89,9 @@ defer옵션이나 DOMContetnLoaded라는 이벤트는 html만 완료가 되면 �
 beforeunload는 unloaded 되기 전에 호출이 되고
 unloaded는 리소스들이 모두 unloaded가 되었을 때 호출이 된다.
 그래서 사용자가 페이지를 나가지 전에 뭔가 해야한다면 여기에 콜백함수를 등록해서 처리 할 수 있다
+
+
+
 
 Async vs defer
 ---------------
@@ -104,6 +119,8 @@ html에서 javascript를 포함할 때 어떻게 포함하는게  효율적인�
 사용자가 웹사이트 전체를 보게 되는 데 까지 시간이 많이 걸린다. 그래서 스크립트를 헤드에 그냥 포함하는 것은 좋은것이 아니다. 
 
 
+
+
 ### body 마지막에 스크립트를 넣는 경우
 ```
 <!DOCTYPE html>
@@ -124,6 +141,8 @@ html에서 javascript를 포함할 때 어떻게 포함하는게  효율적인�
 * 단점은?
 만약 웹사이트가 자바스크립트에 많이 의존적이라면 즉, 사용자가 의미있는 컨탠츠를 보기 위해서는 HTML을 받는 시간뿐아니라  자바스크립트도 받고 실행하는 시간까지 걸리기 때문에 사용사는 많이 기다리게 될 수 도 있다.
 
+
+
 ### head안에 스크립트 && asyc라는 속성을 넣는 경우 
 ```
 <!DOCTYPE html>
@@ -142,6 +161,8 @@ asyc로 설정하게 되면 브라우저가 html을 parsing하다가 asyc가 선
 하지만 자바스크립트가 html이 다 다운 되기 전에 실행이 되기 때문에  자바스크립트에서 필요한 Html요소가 아직 다운이 다 되지 않은 경우가 생길 수 있다.
 또 자바스크립트를 다운하고 실행하는 동안 html 다운은 언제든지 멈출수 있기 때문에 사용작 페이지를 보는데 시간이 많이 걸릴수 있다 
 
+
+
 ### head안에 스크립트를 && defer이라는 속성을 넣는 경우
 ```
 <!DOCTYPE html>
@@ -156,6 +177,7 @@ asyc로 설정하게 되면 브라우저가 html을 parsing하다가 asyc가 선
 </html>
 ```
 이 경우에는 html parsing하다가 스크립트를 만나면 다운로드를 받자고 명령만 시켜 놓고 나머지 html을 parsing 하게 된다. 그리고 마지막에 parsing이 끝난 후에 다운받아 놓은  자바스크립트를 실행한다
+
 
 
 #### ’use strict’; 정의하는 이유
