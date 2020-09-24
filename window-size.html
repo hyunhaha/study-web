@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Window size</title>
+    <style>
+        div {
+            display: inline-block;
+            background-color: aqua;
+            padding: 16px;
+            font-size: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tag">Window size</div>
+    <script>
+
+        const tag = document.querySelector('.tag');
+        function update() {
+            tag.innerHTML =
+                `window.screen: ${window.screen.height}, ${window.screen.width}</br>
+            window.screen: ${ window.outerHeight}, ${window.outerWidth}</br>
+            window.screen: ${ window.innerHeight}, ${window.innerWidth}</br>
+            documentelement.clientwidth: ${ document.documentElement.clientHeight}, ${document.documentElement.clientWidth}</br>
+            `;
+        };
+        window.addEventListener('resize', () => {
+            update();
+
+
+            console.log(`window.screen: ${window.screen.height}, ${window.screen.width} `);
+            console.log(`window.screen: ${window.outerHeight}, ${window.outerWidth} `);
+            console.log(`window.screen: ${window.innerHeight}, ${window.innerWidth} `);
+            console.log(`documentelement.clientwidth: ${document.documentElement.clientHeight}, ${document.documentElement.clientWidth}`);
+        });
+
+        update();
+    </script>
+</body>
+
+</html>

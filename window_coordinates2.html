@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body {
+            position: relative;
+        }
+
+        .rect {
+
+            width: 100px;
+            height: 100px;
+            background-color: rgb(207, 238, 207);
+            margin: 10px;
+        }
+
+        .special {
+            background-color: rgb(125, 145, 125)
+        }
+
+        .buttons {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+
+
+        }
+
+        .buttons button {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="rect">1</div>
+    <div class="rect">2</div>
+    <div class="rect">3</div>
+    <div class="rect">4</div>
+    <div class="rect">5</div>
+    <div class="rect">6</div>
+    <div class="rect special">7</div>
+    <div class="rect">8</div>
+    <div class="rect">9</div>
+    <div class="rect">10</div>
+
+    <div class="buttons">
+        <button class="by">Scroll by 100px(y)</button>
+        <button class="to">Scroll to 100px(y)</button>
+        <button class="into">Scroll to special</button>
+    </div>
+    <script>
+        const scroll__by = document.querySelector(".by");
+        const scroll__to = document.querySelector(".to");
+        const scroll__into = document.querySelector(".into");
+        const special = document.querySelector(".special");
+        scroll__by.addEventListener("click", () => {
+            window.scrollBy({ top: 100, left: 0, behavior: "smooth" });
+        });
+
+        scroll__to.addEventListener('click', (event => {
+            window.scrollTo({ top: 100, left: 0, behavior: "smooth" });
+        }));
+
+        scroll__into.addEventListener("click", (event) => {
+            special.scrollIntoView({ behavior: "smooth" });
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="test.js" defer></script>
+    //js loaded가 먼저 출력이 된다
+    //defer 옵션을 쓰게 되면 html이 모두 분석parsing이 모두 완료된 다음에 contentloaded가 발생하기 이전에 먼저 호출이 된다
+</head>
+
+<body>
+    <script>
+        //document 즉 html만 다운로드가 되면 호출된다
+        window.addEventListener("DOMContentLoaded", () => {
+            console.log('DOMContentLoaded');
+        });
+        //load는 리소스, 즉 페이지 안에서 쓰이고 있는 폰트나 이미지 css 같은 것들이 다 다운되면 호출이 된다
+        window.addEventListener('load', () => {
+            console.log('load');
+        });
+
+        //로드가 안될 때, 즉 페이지가 끝날 때 호출 되는 beforeunload
+        //브라우저에서 사용자가 나갈때, 그 직전에 불러지는 함수 
+        window.addEventListener('beforeunload', () => {
+            console.log('beforeunload');
+        });
+
+        //리소스가 모두다 unloaded 되었을 때
+        window.addEventListener('unloaded', () => {
+            console.log('unloaded');
+        });
+    </script>
+</body>
+
+</html>
