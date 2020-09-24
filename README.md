@@ -182,7 +182,73 @@ asyc로 설정하게 되면 브라우저가 html을 parsing하다가 asyc가 선
 
 ![제목_없는_아트워크 5](https://user-images.githubusercontent.com/50136014/94115200-5a290f80-fe84-11ea-9541-8dbe4219b8b6.jpg)
 
- ’use strict’; 정의하는 이유
+’use strict’; 정의하는 이유
 -------
 자바스크립트는 유연하게 만들어졌다. 유연하다는 것은 굉장히 위험할 수 있다는 뜻이 될 수 있다.  Use strict를 선언하면 비상식적인 부분이 제한 된다. 
+
+
+DOM(Document Object Model)
+---------------
+
+DOM은 브라우저에서 html 파일을 열면 브라우저가 html파일을 읽어서 모든 태그들을 분석해서 노드로 변환하는데 브라우저가 이해할 수 있는 오브젝트로 변환한 것이다. 
+
+### Node
+
+html 파일에서 쓰인 태그가 자바스크립트에서는  Node 라는 오브젝트로 변환이 된다. 그리고 이 노드의 오브젝트 안에는 우리가 작성한 클래스나 텍스트등의 정보가 포함 되어있다.
+또 이 노드라는 오브젝트는 EventTarget이라는 오브젝트를 상속한다. 따라서  Node라는 오브젝트는 EventTarget의 오브젝트라고 할 수 있어 모든 Node는 이벤트가 발생할 수 있다. 
+document는 Node를 상속하기 때문에 또 EventTarget도 상속을 한다. 그래서 document에서 이벤트가 발생 할 수 있다. html요소들은 Element로 변환이 되기 때문에 모든 html요소에서 이벤트가 발생 할 수 있다. 
+element에도 종류가 많이 있는데 html 요소라면 HTMLElement라고 한다.  HTMLElement 안에는 어떤 태그를 쓰냐에 따라 HTMLInpuElement HTMlDivElement HTMlLmageElement등 많은 태그별로 Elelment 가 존재한다.
+
+### DOM Tree
+
+브라우저가 html 파일을 읽으면서 DOM 트리로 변환하여 브라우저가 이해 할 수 있는 것으로 만드는 것이다. Html 에 있는 각각의 태그들이 DOM요소와 하니씩 대응할 수 있다. 
+
+### EventTarget
+
+Node는 모두 EventTarget을 상속하기 때문에 EventTarget에서 지원하는 API를 사용 할 수 있다.
+addEventListener()
+removeEventListener()
+dispatchEventListener()
+
+
+
+CSSOM(CSS Object Model)
+-----------------------
+
+브라우저에서 DOM을 만들게 되면 CSS를 병합해서 CSSOM이라는 것을 만든다. 모든 스타일(html파일 안에 들어있는 스타일이나 css파일에 정의 한 css 또는 브라우저가 기본적으로 가지고 있는 스타일)에 관련된 정보들은 합하고 DOM과 CSS요소를 병합해서 CSS DOM이라는 트리리틑 다시 만든다. CSSOM에는 우리가 정의한 스타일뿐만아니라 브라우저에 기본 설정 값 cascading룰에 따라 합해진 css의 모든 값이 정의 되어 있다. 
+
+그래서 브라우저가 html파일을 읽기 시작하면 제일 처음 DOM트리를 만들고 다음 css파일을 읽고 최종적인 css스타일 트리를 만든다. 그후 DOM과 CSSOM을 합쳐서 최종적으로 브라우저에 표기될 것만 Render트리에 표기가 된다. 
+예를 들어 opacity:0 이나 visibility:hidden은 Render트리에 포함이 되지만 display:none은 Render트리에 포함 되어 있지 않는다. 
+
+
+
+랜더링 순서
+--------
+
+브라우저에 URL을 입력하게 되면 다음과 같은 순서를 거친 후에 화면에 보여진다. 
+ 
+Requests/response->loading-> scripting->rendering->layout->painting->composition
+⌊_________________construction__________________⌋ ⌊__________operation_________⌋
+
+html파일을 서버에서 받아 로딩을 하고 html을 읽어 DOM요소로 변환하는 scripting을 진행하고 CSS요소를 CSSOM으로 변환한다. 그후에 브라우저 윈도우에 표기를 하기 위해서 준비를 하는데 Rendering 트리를 만든 후에 어디에 얼만한 크기로 표기 할지 계산을 한후 painting을 진행한다.
+
+위의 진행사항을 두가지로 나눈다면 html을 브라우저가 이해할 수 있는 DOM으로 바꾸고 최종적으로 RenderTree를 만드는  construction부분과 Rendering 트리를 보고 배치하고 브라우저 윈도우에 그림을 그리는 operation 부분으로 나눌 수 있다. 
+
+**layout**과정은 renderTree의 정보를 기반으로 윈도우 위에 어느위치에 어느정도의 크기로 놓을지 구상하는 단계이다. 
+
+그 후 **paint**단계를 거치는데 layout단계 후 바로 윈도우에 그리는 것이 아니라 요소들이 어떻게 배치되어 있는지를 기준으로 각 부분을 쪼개어서 이미지를 레이어가 쌓여 있는 것처럼 해놓는다. 이렇게 해 놓으면 투명도를 변환하거나 아이템의 위치가 바뀌가나 할 때 전체적으로 그림을 지우고 다시 그리는 것이 아니라 수정 해야할 부분만 다시 그리면 되기 때문에 전체를 지우고 다시 그리는 것보다 성능이 좋아진다.
+성능개선을 위해서 CSS에 will-change라는 속성값을 주게 되면 변경될지 모르니 새로운 레이어에 그 아아템을 놓는 준비를 해둘 수 있다. 
+
+**composition**단계는 준비된 레이어를 순서대로 브라우저 위에 표기한다. 
+
+이렇게 html페이지에서 브라우저를 표기하는 단계들을 **critical rendering path**라고 한다. 
+
+#### construction부분에서 rendering트리를 만들 때 어떻게 하면 빠르게 만들 수 있을까?
+DOM요소가 작을 수록 CSS양이 작을 수로 트리가 빠르게 만들어 진다. 따라서 불필요한 태그를 쓰는 것을 좋지 않다.
+또 operation부분에서는 처음 표기 후에 나중에 사용자가 클릭을 하는등 움직임이 있을 때 paint가 자주 일어나지 않게 만드는 것이 중요하다. 
+예를 들어 페이지에 한 네모 아이템이 있는데 그 아이템을 tranclate을 이용해서 움직이면 어떤 과정이 발행할까? translate를 이용하게 되면 paint는 일어나지 않고 레이어의 위치만 움직이면 된다. 즉 composition 만 수행하면 되기 때문에 성능이 좋게 작동 할 수 있다. 하지만 성능이 최악인 경우에는 아이템의 포지션을 바꾸어 layout부터 변경하여 paint composition까지 모두 바꾸는 것이다. 
+
+#### css속성값 알기
+http://csstriggers.com/
+
 
