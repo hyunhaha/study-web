@@ -1,12 +1,13 @@
-Web APIs(Application Programming Interfaces)
-This is an H1
+Let's study Web
 =============
+
+Web APIs(Application Programming Interfaces)
+-------------
 
 APIs란?
 예를 들어 자판기에서 음료를 뽑을 때 자판기가 어떻게 작동하는지 몰라도 동전을 넣고 버튼하나만 누르면 원하는 기능을 수행 할 수 있다. 
-마찬가지로 windows에서 제공하는 APIs를 사용하면 간단하게 윈도우 어플리케이션을 만들 수 있고 안드로이드나 맥OS에서 제공하는 APIs를 사용하면 간단하게 모바일 어플리케이션을 만들 수 있다.  또는 유튜브에서 제공하는 API를 사용헤서 유튜브에 있는 데이터를 받아 올 수도 있다.
 
-이렇게 OS나 플랫품에서 제공하는 API도 있지만 진행하는 프로젝트에서 UserStorage라는 클래스에 로그인과 로그아웃에 대한 함수가 있따면 UserStorage클래스에서 제공하는 두가지 APIs가 있다고 할 수 있다.
+마찬가지로 windows에서 제공하는 APIs를 사용하면 간단하게 윈도우 어플리케이션을 만들 수 있고 안드로이드나 맥OS에서 제공하는 APIs를 사용하면 간단하게 모바일 어플리케이션을 만들 수 있다. 또는 유튜브에서 제공하는 API를 사용헤서 유튜브에 있는 데이터를 받아 올 수도 있다.이렇게 OS나 플랫품에서 제공하는 API도 있지만 진행하는 프로젝트에서 UserStorage라는 클래스에 로그인과 로그아웃에 대한 함수가 있따면 UserStorage클래스에서 제공하는 두가지 APIs가 있다고 할 수 있다.
 
 이처럼 Web APIs는 브라우저에서 제공하는 것이다. 브라우저마다 공통적으로 제공하는 API 많이 있는데 DOM APIs, Network APIs, 그래픽 관련 APIs등 여러가지가 있다. 
 
