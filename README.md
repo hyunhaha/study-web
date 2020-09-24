@@ -36,25 +36,29 @@ Page x,y 는 클라이언트에 들어있는 사이즈가 아니라 문서에서
 Window load
 -------------
 1. load
+```
     <script>
        window.addEventListener('load', () => {
             console.log('load');
         });
     </script>
-
+```
 load는 리소스, 즉 페이지 안에서 쓰이고 있는 폰트나 이미지 css 같은 것들이 다 다운되면 호출이 된다
 브라우저가 html파일을 열게 되면 처음 부터 html페이지를 읽어서 DOM 요소로 변환한 다음 스크립트 부분을 만나면 윈도우에 이벤트 리스너를 등록하게되고 윈도우에서 페이지에 필요한 모든 리소스가 다 로딩이 완료가 되면 콜백함수를 실행한다.
 
 2. DOMContentLoaded
+```
     <script>
 	window.addEventListener("DOMContentLoaded", () => {
             console.log('DOMContentLoaded');
         });
-    </script>
+    </script>```
 DOMContentLoaded는 html만 다 완료가 되면 이것이 호출 된다. 자바스크립트 파일이 이미지나 폰트 를 사용하지 않으면 DOMContentLoaded안에서 동작을 수행하는 것이 조금 더 빠르게 사용자가 화면을 볼 수 있는 장점이 있다.
 defer옵션이나 DOMContetnLoaded라는 이벤트는 html만 완료가 되면 호출 되기 때문에 리소스가 많은 경우에는 DOMContetnLoaded으로 빠르게 화면을 보여주고 load는 조금 후에 리소스가 다 준비되면 보여 줄 수 있다
 
 3. beforeunload 와 unloaded
+
+```
     <script>
 	//로드가 안될 때, 즉 페이지가 끝날 때 호출 되는 beforeunload
         //브라우저에서 사용자가 나갈때, 그 직전에 불러지는 함수 
@@ -66,8 +70,7 @@ defer옵션이나 DOMContetnLoaded라는 이벤트는 html만 완료가 되면 �
         window.addEventListener('unloaded', () => {
             console.log('unloaded');
         });
-    </script>
-
+    </script>```
 브라우저에서 사용자가 페이지를 나갈 때 호출 되는 것들이다
 beforeunload는 unloaded 되기 전에 호출이 되고
 unloaded는 리소스들이 모두 unloaded가 되었을 때 호출이 된다.
